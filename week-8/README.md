@@ -36,6 +36,8 @@ Interactive Demo Session/
 
 ## 📋 Challenge Requirements
 
+> **⚠️ IMPORTANT FOR STUDENTS**: This project contains sections marked with `// YOUR CODE HERE` comments where you need to implement the required functionality. Look for these markers in the JavaScript file and complete the missing code according to the specifications below.
+
 ### 1. Input Validation (`validateInput` function)
 
 - ✅ Verify field is not empty
