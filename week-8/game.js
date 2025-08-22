@@ -55,9 +55,21 @@ function initGame() {
  */
 function validateInput(input) {
   // YOUR CODE HERE
-  if (input > 0) {
-    return { isValid: true, number: parseInt(input) };
-  } else return { isValid: false, message: 'Input invalid' };
+  const tempInput = parseInt(input);
+  if (
+    tempInput >= 1 &&
+    tempInput <= 100 &&
+    !previousGuesses.includes(tempInput)
+  ) {
+    return { isValid: true, number: parseInt(tempInput) };
+  } else if (tempInput < 1 || tempInput > 100) {
+    return {
+      isValid: false,
+      message: 'Please enter a number between 1 and 100!',
+    };
+  } else if (previousGuesses.includes(tempInput)) {
+    return { isValid: false, message: 'You already guessed that number!' };
+  } else return { isValid: false, message: 'Please enter a number!' };
 }
 
 /**
@@ -124,11 +136,17 @@ function processGuess(guess) {
   attemptsLeft--;
   attemptsLeftSpan.textContent = attemptsLeft;
   if (guess === targetNumber) {
-    showFeedback('Correct', 'success');
+    showFeedback('🎉 Congratulations! You guessed it!', 'success');
     endGame(true);
-  } else if (guess > targetNumber) {
-    showFeedback('Too High', 'high');
-  } else showFeedback('Too Low', 'low');
+  } else if (guess > targetNumber && attemptsLeft > 0) {
+    showFeedback('📉 Too high! Try a lower number.', 'high');
+  } else if (guess < targetNumber && attemptsLeft > 0) {
+    showFeedback('📈 Too low! Try a higher number', 'low');
+  } else {
+    // showFeedback('😞 Game Over! The number was X.', 'error');
+    endGame(false);
+  }
+  guessInput.value = '';
 }
 
 /**
@@ -182,6 +200,11 @@ function handleSubmit() {
 // Event listeners
 // YOUR CODE HERE
 submitBtn.addEventListener('click', () => handleSubmit());
+guessInput.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') {
+    handleSubmit();
+  }
+});
 
 resetBtn.addEventListener('click', () => initGame());
 
